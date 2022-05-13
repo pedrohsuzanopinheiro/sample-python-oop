@@ -1,4 +1,5 @@
 import datetime
+from typing import List
 
 
 class Employee:
@@ -33,23 +34,56 @@ class Employee:
         return True
 
 
-emp_1 = Employee(first="Pedro", last="Pinheiro", pay=100000)
-emp_2 = Employee(first="Pedro", last="Junior", pay=75000)
+class Developer(Employee):
+    raise_amount: float = 1.10
 
-emp_str_1 = "John-Doe-70000"
-emp_str_2 = "Steve-Smith-30000"
-emp_str_3 = "Jane-Doe-90000"
-emp_3 = Employee.fromstring(emp_str_1)
-emp_4 = Employee.fromstring(emp_str_2)
-emp_5 = Employee.fromstring(emp_str_3)
+    def __init__(
+        self, first: str, last: str, pay: float, prog_lang: str
+    ) -> None:
+        super().__init__(first, last, pay)
+        self.prog_lang = prog_lang
 
-emps = [emp_1, emp_2, emp_3, emp_4, emp_5]
-Employee.set_raise_amt(1.05)
 
-for emp in emps:
-    print(emp.fullname(), emp.apply_raise(), emp.raise_amount)
+class Manager(Employee):
+    raise_amount: float = 1.25
 
-print(Employee.num_of_emps)
+    def __init__(
+        self,
+        first: str,
+        last: str,
+        pay: float,
+        employees: List[Employee] = None,
+    ) -> None:
+        super().__init__(first, last, pay)
+        if employees is None:
+            self.employees = []
+        else:
+            self.employees = employees
 
-today = datetime.datetime.today()
-print(f"Is workday? R: {Employee.is_workday(today)}")
+    def add_emp(self, emp: Employee) -> None:
+        if emp not in self.employees:
+            self.employees.append(emp)
+
+    def remove_emp(self, emp: Employee) -> None:
+        if emp in self.employees:
+            self.employees.remove(emp)
+
+    def print_emps(self) -> None:
+        for emp in self.employees:
+            print("-->", emp.fullname())
+
+
+dev_1 = Developer(
+    first="Pedro", last="Pinheiro", pay=100000, prog_lang="Python"
+)
+dev_2 = Developer(first="Pedro", last="Junior", pay=75000, prog_lang="Java")
+
+mgr_1 = Manager(first="Suse", last="Lala", pay=150000, employees=[dev_1])
+
+mgr_1.add_emp(dev_2)
+
+mgr_1.remove_emp(dev_1)
+
+devs = [dev_1, dev_2]
+
+mgr_1.print_emps()
