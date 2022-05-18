@@ -33,6 +33,15 @@ class Employee:
             return False
         return True
 
+    def __repr__(self) -> str:
+        return f"Employee({self.first}, {self.last}, {self.pay})"
+
+    def __add__(self, other) -> int:
+        return self.pay + other.pay
+
+    def __len__(self) -> int:
+        return len(self.fullname())
+
 
 class Developer(Employee):
     raise_amount: float = 1.10
@@ -42,6 +51,9 @@ class Developer(Employee):
     ) -> None:
         super().__init__(first, last, pay)
         self.prog_lang = prog_lang
+
+    def __str__(self) -> str:
+        return f"{self.fullname()}-{self.prog_lang}"
 
 
 class Manager(Employee):
@@ -82,8 +94,8 @@ mgr_1 = Manager(first="Suse", last="Lala", pay=150000, employees=[dev_1])
 
 mgr_1.add_emp(dev_2)
 
-mgr_1.remove_emp(dev_1)
-
 devs = [dev_1, dev_2]
 
 mgr_1.print_emps()
+
+print(dev_1)
