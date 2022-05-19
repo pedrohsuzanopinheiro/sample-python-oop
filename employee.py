@@ -12,8 +12,25 @@ class Employee:
         self.pay = pay
         Employee.num_of_emps += 1
 
+    @property
     def fullname(self) -> str:
         return f"{self.first} {self.last}"
+
+    @fullname.setter
+    def fullname(self, name) -> None:
+        first, last = name.split(" ")
+        self.first = first
+        self.last = last
+
+    @fullname.deleter
+    def fullname(self) -> None:
+        print("Delete Name!")
+        self.first = None
+        self.last = None
+
+    @property
+    def email(self) -> str:
+        return f"{self.first}.{self.last}@gmail.com"
 
     def apply_raise(self) -> float:
         return self.pay * self.raise_amount
@@ -40,7 +57,7 @@ class Employee:
         return self.pay + other.pay
 
     def __len__(self) -> int:
-        return len(self.fullname())
+        return len(self.fullname)
 
 
 class Developer(Employee):
@@ -82,7 +99,7 @@ class Manager(Employee):
 
     def print_emps(self) -> None:
         for emp in self.employees:
-            print("-->", emp.fullname())
+            print("-->", emp.fullname)
 
 
 dev_1 = Developer(
@@ -98,4 +115,8 @@ devs = [dev_1, dev_2]
 
 mgr_1.print_emps()
 
-print(dev_1)
+dev_1.fullname = "Zé Ramalho"
+
+print(dev_1.email)
+
+del dev_1.fullname
